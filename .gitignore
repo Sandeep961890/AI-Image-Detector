@@ -1,0 +1,36 @@
+# Virtual environments
+.venv/
+venv/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+
+# Model weights and checkpoints
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.ckpt
+*.h5
+*.keras
+*.gguf
+*.pb
+*.tflite
+*.model
+*.weights
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+.flaskenv
+
+# Temporary uploads and generated files
+uploads/
+tmp/
+temp/
+*.upload
+*.part
+*.tmp
+*.temp

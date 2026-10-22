@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Inspect an image with the local AI Image Detector.">
+  <title>AI Image Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-brand" href="{{ url_for('index') }}" aria-label="AI Image Detector home">
+      AI Image Detector
+    </a>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="#analyzer">Analyze</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#metadata">Image details</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">PRIVATE, LOCAL IMAGE CHECK</p>
+      <h1 id="page-title">Understand what’s behind your image.</h1>
+      <p>
+        Choose an image to check the detector. Your upload is handled locally
+        and is not retained by the app.
+      </p>
+    </section>
+
+    <section id="analyzer" class="analyzer" aria-labelledby="analyzer-title">
+      <h2 id="analyzer-title">Analyze an image</h2>
+      <p id="supported-formats">
+        Supported formats: JPEG, PNG, and WebP. Maximum file size: 10 MB.
+      </p>
+
+      <form
+        id="analyze-form"
+        action="{{ url_for('analyze') }}"
+        method="post"
+        enctype="multipart/form-data"
+        aria-describedby="supported-formats"
+      >
+        <label class="upload-area" id="upload-area" for="image">
+          <span class="upload-title">Drop an image here or choose a file</span>
+          <span class="upload-hint">Selecting a file works with keyboard and touch.</span>
+          <input
+            id="image"
+            name="image"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            aria-describedby="supported-formats file-name"
+            required
+          >
+        </label>
+
+        <p id="file-name" class="file-name" aria-live="polite">No image selected</p>
+
+        <figure class="image-preview" id="preview-container" hidden>
+          <img
+            class="preview"
+            id="image-preview"
+            alt="Preview of the selected image"
+          >
+          <figcaption>
+            <button type="button" id="remove-image" aria-label="Remove selected image">
+              Remove image
+            </button>
+          </figcaption>
+        </figure>
+
+        <p id="client-error" class="message message--error" role="alert" hidden></p>
+
+        <button type="submit" id="analyze-button">Analyze Image</button>
+
+        <p id="loading-indicator" class="loading-indicator" role="status" aria-live="polite" hidden>
+          <progress aria-label="Image analysis in progress"></progress>
+          <span>Analyzing image…</span>
+        </p>
+      </form>
+    </section>
+
+    <section id="results" class="results" aria-labelledby="results-title" aria-live="polite">
+      <h2 id="results-title">Results</h2>
+      {% if message %}
+        {% if message_type == "error" %}
+      <p class="message message--error" role="alert">{{ message }}</p>
+        {% else %}
+      <p class="message message--notice" role="status">{{ message }}</p>
+        {% endif %}
+      {% else %}
+      <p id="results-placeholder">
+        No analysis has been performed. Results will appear here only when a
+        detector is configured.
+      </p>
+      {% endif %}
+    </section>
+
+    <section id="metadata" class="metadata" aria-labelledby="metadata-title">
+      <h2 id="metadata-title">Image details</h2>
+      <dl>
+        <div>
+          <dt>File name</dt>
+          <dd id="metadata-name">Not selected</dd>
+        </div>
+        <div>
+          <dt>File type</dt>
+          <dd id="metadata-type">Not selected</dd>
+        </div>
+        <div>
+          <dt>File size</dt>
+          <dd id="metadata-size">Not selected</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Local image tool. No account, external AI API, or image storage.</p>
+  </footer>
+</body>
+</html>
